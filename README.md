@@ -33,6 +33,37 @@ docker run -it --net host --pid host --cap-add audit_control \
     docker/docker-bench-security
 ```
 
+```sh
+-t              : Allocate a pseudo-tty
+-i              : Keep STDIN open even if not attached
+-it             : For interactive processes (like a shell), you must use -i -t together 
+                  in order to allocate a tty for the container process. -i -t is often written -it
+
+--net = 'host'  : Use the Docker host network stack
+
+--pid = 'host'  : Set the PID (Process) Namespace mode for the container,
+                  to use the host's PID namespace inside the container. This allows
+                  processes within the container to see all of the processes on the system.
+
+--cap-add audit_control : Add Linux capabilities for audit control to enable and disable kernel auditing;
+                          change auditing filter rules; retrieve auditing status and filtering rules. See
+                          here for complete list https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities
+
+-e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST : Set Docker Content Trust to check signed images. 
+                                                Content trust is disabled by default. To enable it, 
+                                                set the DOCKER_CONTENT_TRUST environment variable to 1.
+                                                Here we pass value as environment variable to the container.
+                                                See https://docs.docker.com/engine/security/trust/content_trust/                        
+
+-v = [host-src:]container-dest[:<options>]: Bind mount a volume.
+                                            The comma-delimited `options` are [rw|ro], [z|Z],
+                                            [[r]shared|[r]slave|[r]private], and [nocopy].
+                                            The 'host-src' is an absolute path or a name value.
+
+--label docker_bench_security : Set label docker_bench_security, need to check Docker Daemon to see how
+                                this is used.
+```
+
 Docker bench requires Docker 1.10.0 or later in order to run.
 
 Note that when distributions doesn't contain `auditctl`, the audit tests will
